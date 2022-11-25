@@ -3,6 +3,9 @@ body{
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: #E7F6FF;
 }
+*{
+    font-family: "Inter", system-ui;
+}
 .wrapper{
     background: #FFFFFF;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
@@ -21,6 +24,138 @@ header{
     }
 }
 
+.search-block{
+    border: 1px solid #F3F3F3;
+    padding: 10px;
+    border-radius: 10px;
+    input{
+        border: none;
+        margin-left: 10px;
+        font-size: 16px;
+        width: 200px;
+    }
+}
+
+.overlay{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.drawer{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 420px;
+    height: 100%;
+    right: 0;
+    background: #FFFFFF;
+    box-shadow: -10px 4px 24px rgba(0, 0, 0, 0.01);
+    padding: 30px;
+    .items{
+        overflow: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    h2{
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+    }
+    .drawer-card{
+        padding: 20px;
+        border: 1px solid #F3F3F3;
+        border-radius: 20px;
+        margin-top: 25px;
+        overflow: hidden;
+        h5{
+            font-weight: 400;
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        span{
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .card-info{
+            margin-left: 20px;
+        }
+        .removeBtn{
+            opacity: 0.5;
+            cursor: pointer;
+            transition: opacity 0.15s ease-in-out;
+            &:hover{
+                opacity: 1;
+            }
+        }
+        .cardItemImg{
+            width: 70px;
+            height: 70px;
+            background-size: contain;
+            background-position: 0 10px;
+            background-repeat: no-repeat;
+        }
+    }
+    .btnBuy{
+        justify-content: space-around;
+        position: relative;
+        transition: transform 0.2s ease-in-out;
+        padding: 18px 20px;
+        background-color: #9DD458;
+        color: #fff;
+        text-align: center;
+        border-radius: 18px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out;
+        &:hover{
+            img{
+                transform: translateX(5px);
+            }
+        } 
+        &:hover{
+            background: lighten(#9dd558, 5%);
+        }
+        &:active{
+            background: darken(#9dd558, 5%);
+        }
+        img {
+            position: absolute;
+            right: 40px;
+            top: 20px;
+            transition: transform 0.15s ease-in-out;
+        }
+    }
+}
+
+.items{
+    flex: 1;
+}
+
+.CartTotalBlock{
+    margin-bottom: 40px;
+    li{
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 20px;
+    }
+    div{
+        flex: 1;
+        height: 1px;
+        border-bottom: 1px dashed #dfdfdf;
+        position: relative;
+        top: -4px;
+        margin: 0 7px;
+    }
+}
+
 .content{
     h1{
         margin: 0;
@@ -35,6 +170,19 @@ header{
     width: 220px;
     border-radius: 40px;
     margin-right: 30px;
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+    &:hover{
+        box-shadow: 0px 14px 35px rgba(0, 0, 0, 0.07);
+        transform: translateY(-5px);
+    }
+
+    .favorite_sneakers{
+        img{
+            position: absolute;
+            cursor: pointer;
+        }
+    }
 
     span{
         font-size: 13px;
@@ -53,7 +201,7 @@ header{
 }
 .btn{
     background: #ffff;
-    border: 1px solid #f2f2f2; 
+    border: none; 
     box-sizing: border-box;
     border-radius: 8px;
     height: 32px;
