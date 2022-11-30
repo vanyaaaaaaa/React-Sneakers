@@ -1,6 +1,8 @@
+import style from './Header.module.scss'
+
 function Header(){
     return(
-        <header className="d-flex justify-between align-center p-40">
+        <header style={style.header} className="d-flex justify-between align-center p-40">
         <div className="d-flex align-center">
       <img width={40} height={40} src="/img/logo.png" alt="logo" />
           <div>

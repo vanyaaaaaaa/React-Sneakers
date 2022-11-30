@@ -1,6 +1,13 @@
 import Card from "./components/Card"
 import Header from "./components/Header"
-import Basket from "./components/Basket";
+import Basket from "./components/Basket/Basket";
+
+let sneakers = [
+  {name: "Мужские Кроссовки Nike Blazer Mid Suede", price: '12 999', imgUrl: '/img/sneakers/11.png'},
+  {name: "Мужские Кроссовки Nike Air Max 270", price: '10 999', imgUrl: '/img/sneakers/12.png'},
+  {name: "Мужские Кроссовки Nike Blazer Mid Suede", price: '13 999', imgUrl: '/img/sneakers/1.png'},
+  {name: "Кроссовки Puma X Aka Boku Future Rider", price: '9 599', imgUrl: '/img/sneakers/2.png'},
+] 
 
 function App() {
   return (
@@ -20,7 +27,14 @@ function App() {
           </div>
         </div>
           <div className="d-flex">
-          <Card />
+          {
+            sneakers.map(val =>
+              <Card 
+              name={val.name}
+              price={val.price}
+              imgUrl={val.imgUrl}/>
+            )
+          }
           </div>
       </div>
     </div>
