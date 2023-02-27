@@ -1,16 +1,19 @@
 import React from 'react';
 import style from './Card.module.scss'
 
-function Card({id, title, imgUrl, price, onPlus, onAddToFavorite, favorited = false}){
+function Card({id, title, imgUrl, price, onPlus, onAddToFavorite, favorited = false, onRemoveFavorite, onRemoveItem}){
     const [isAdd, setIsAdd] = React.useState(false);
     const [isLike, setLike] = React.useState(favorited);
 
     const onClickPlus = () => {
-        onPlus({id, title, price, imgUrl});
+        (isAdd === true) ? onRemoveItem(id) : onPlus({id, title, price, imgUrl});
         setIsAdd(!isAdd);
     }
 
     const onClickLike = () => {
+        if (isLike === true){
+            onRemoveFavorite(id);
+        }
         setLike(!isLike);
         onAddToFavorite({id, title, price, imgUrl});
     }
@@ -27,7 +30,7 @@ function Card({id, title, imgUrl, price, onPlus, onAddToFavorite, favorited = fa
             <span>Цена:</span>
             <b>{price} руб.</b>
         </div>
-            <button className="btn" onClick={onClickPlus}>
+            <button className="btn" onClick={(id) => onClickPlus(id)}>
             <img src={(isAdd) ? "/img/noCheck.svg":"/img/check.svg"} alt="alt" />
             </button>
     </div>

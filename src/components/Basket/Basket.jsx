@@ -1,4 +1,7 @@
-function Basket({onClose, onRemove, items = []}){
+function Basket({onClose, onRemove, items = [], makeOrder}){
+  const order = () => {
+    makeOrder(items);
+  }
     return(
         <div className="overlay">
         <div className="drawer">
@@ -8,7 +11,6 @@ function Basket({onClose, onRemove, items = []}){
                     <img  src="/img/cross.svg" alt="alt" />
                   </button>
                 </div>
-
       {
         items.length > 0 ? 
         (
@@ -37,7 +39,7 @@ function Basket({onClose, onRemove, items = []}){
               <b>1074 руб.</b>
             </li>
           </ul>
-          <button className="btnBuy">Оформить заказ <img src="/img/arrow.svg" alt="arrow" /></button> 
+          <button className="btnBuy" onClick={order}>Оформить заказ <img src="/img/arrow.svg" alt="arrow" /></button> 
     </div>
         </div>  
         )

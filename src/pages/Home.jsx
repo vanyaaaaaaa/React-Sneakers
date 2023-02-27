@@ -1,6 +1,6 @@
 import Card from "../components/Card";
 
-function Home({searchValue, setSearchValue, onChangeInput, items, onAddToCart, onAddToFavorite}){
+function Home({searchValue, setSearchValue, onChangeInput, items, onAddToCart, onAddToFavorite, onRemoveFavorite, onRemoveItem}){
     return(
         <div className="content p-40">
         <div className="d-flex justify-between align-center mb-40">
@@ -23,6 +23,8 @@ function Home({searchValue, setSearchValue, onChangeInput, items, onAddToCart, o
               {...item}
               onPlus={(item) => onAddToCart(item)}
               onAddToFavorite={(item) => onAddToFavorite(item)}
+              onRemoveFavorite={onRemoveFavorite}
+              onRemoveItem={onRemoveItem}
               />
             )
           }
