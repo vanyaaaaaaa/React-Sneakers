@@ -1,40 +1,64 @@
 import React from 'react';
+import ContentLoader from 'react-content-loader'
 import style from './Card.module.scss'
+import AppContext from '../../context';
 
-function Card({id, title, imgUrl, price, onPlus, onAddToFavorite, favorited = false, onRemoveFavorite, onRemoveItem}){
-    const [isAdd, setIsAdd] = React.useState(false);
-    const [isLike, setLike] = React.useState(favorited);
+function Card({
+    id,
+    title, 
+    imgUrl,
+    price, 
+    onPlus, 
+    onAddToFavorite, 
+    onRemoveFavorite, 
+    onRemoveItem,
+    }){
+    const {isLoading, isItemAdded, isItemFavorited} = React.useContext(AppContext);
 
     const onClickPlus = () => {
-        (isAdd === true) ? onRemoveItem(id) : onPlus({id, title, price, imgUrl});
-        setIsAdd(!isAdd);
+        (isItemAdded(id) === true) ? onRemoveItem(id) : onPlus({id, title, price, imgUrl});
     }
 
     const onClickLike = () => {
-        if (isLike === true){
-            onRemoveFavorite(id);
-        }
-        setLike(!isLike);
-        onAddToFavorite({id, title, price, imgUrl});
+        (isItemFavorited(id) === true) ? onRemoveFavorite(id) : onAddToFavorite({id, title, price, imgUrl});
     }
-
+ 
     return(
         <div className={style.card}>
-    <div className="favorite_sneakers" >
-        <img onClick={onClickLike} src={isLike ? "/img/heart-like.svg": "/img/heart-unliked.svg"} alt="alt" />
-    </div>
-    <img width={133} height={112} src={imgUrl} alt="sneakers" />
-    <h5>{title}</h5>
-    <div className="d-flex justify-between align-center">
-        <div className="d-flex flex-column">
-            <span>Цена:</span>
-            <b>{price} руб.</b>
+            {
+                isLoading ? <ContentLoader 
+                speed={2}
+                width={160}
+                height={190}
+                viewBox="0 0 160 190"
+                backgroundColor="#d1cccc"
+                foregroundColor="#ecebeb"
+              >
+                <rect x="0" y="0" rx="10" ry="10" width="160" height="91" /> 
+                <rect x="0" y="99" rx="3" ry="3" width="160" height="15" /> 
+                <rect x="0" y="120" rx="3" ry="3" width="93" height="15" /> 
+                <rect x="0" y="151" rx="8" ry="8" width="80" height="24" /> 
+                <rect x="125" y="146" rx="8" ry="8" width="32" height="32" />
+              </ContentLoader>: 
+                <>
+                    <div className="favorite_sneakers" >
+                        <img onClick={onClickLike} 
+                        src={isItemFavorited(id) ? "/img/heart-like.svg": "/img/heart-unliked.svg"} alt="alt" />
+                    </div>
+                        <img width={133} height={112} src={imgUrl} alt="sneakers" />
+                    <h5>{title}</h5>
+                    <div className="d-flex justify-between align-center">
+                        <div className="d-flex flex-column">
+                            <span>Цена:</span>
+                            <b>{price} руб.</b>
+                        </div>
+                        <button className="btn" onClick={onClickPlus}>
+                        <img src={(isItemAdded(id)) ? "/img/noCheck.svg":"/img/check.svg"} alt="alt" />
+                        </button>
+                    </div>
+                </>
+            }
         </div>
-            <button className="btn" onClick={(id) => onClickPlus(id)}>
-            <img src={(isAdd) ? "/img/noCheck.svg":"/img/check.svg"} alt="alt" />
-            </button>
-    </div>
-</div>
     )
 }
 

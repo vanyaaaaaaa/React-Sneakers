@@ -1,7 +1,16 @@
 import Card from "../components/Card";
+import React from "react";
 import {Link} from "react-router-dom";
+import AppContext from "../context";
 
-function Orders({orders = []}){
+function Orders(){
+    const {orders} = React.useContext(AppContext);
+    orders.map(order => {
+        for (let i = 0; i < order.length; i++){
+            console.log(order[i]);
+        }
+    });
+
     return(
         <div>
         {
@@ -9,11 +18,7 @@ function Orders({orders = []}){
             (
                 <div>
                     {
-                        orders.map((order) =>{
-                            <Card
-                                {...order}
-                            />
-                        })
+                        
                     }
                 </div>
             )

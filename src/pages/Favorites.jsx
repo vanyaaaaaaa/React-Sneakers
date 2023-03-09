@@ -1,8 +1,15 @@
+import React from "react";
 import Card from "../components/Card";
+import AppContext from "../context";
+import Info from "../components/Card/Info";
 
-function Favorites({itemsFavorite,  onAddToCart, onAddToFavorite, onRemoveFavorite, onRemoveItem}){
+function Favorites(){
+    const {itemsFavorite ,onAddToCart, onAddToFavorite, onRemoveFavorite, onRemoveItem} = React.useContext(AppContext);
+
     return(
         <div className="content p-40">
+          {itemsFavorite.length > 0 ? 
+        (<>
         <div className="d-flex justify-between align-center mb-40">
           <h1>Избранное</h1>
           <div className="search-block d-flex align-center">
@@ -18,15 +25,27 @@ function Favorites({itemsFavorite,  onAddToCart, onAddToFavorite, onRemoveFavori
           itemsFavorite.map((item) =>
             <Card
             {...item}
-            favorited={true}
             onPlus={onAddToCart}
             onAddToFavorite={onAddToFavorite}
             onRemoveFavorite={onRemoveFavorite}
             onRemoveItem={onRemoveItem}
+            key={item.id}
             />
           )
           }
           </div>
+          </>
+          )
+          : 
+          (
+            <Info
+              title={"Закладок нет :("}
+              description={"Вы ничего не добавляли в закладки"}
+              src={"/img/smile2.png"}
+              width={"70px"}
+            />
+          )
+          }
       </div>
     )
 }

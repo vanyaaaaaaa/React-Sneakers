@@ -80,6 +80,9 @@ body{
             margin-top: 0;
             margin-bottom: 10px;
         }
+        p{
+            text-align: center;
+        }
         span{
             font-weight: 700;
             font-size: 14px;
@@ -130,8 +133,8 @@ body{
         }
         img {
             position: absolute;
-            right: 40px;
-            top: 20px;
+            right: 55px;
+            top: 24px;
             transition: transform 0.15s ease-in-out;
         }
     }

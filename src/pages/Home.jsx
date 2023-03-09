@@ -1,6 +1,26 @@
+import React from "react";
 import Card from "../components/Card";
+import AppContext from "../context";
 
-function Home({searchValue, setSearchValue, onChangeInput, items, onAddToCart, onAddToFavorite, onRemoveFavorite, onRemoveItem}){
+function Home({
+  searchValue,
+  setSearchValue,
+  onChangeInput
+}){
+  const {items, onAddToCart,onAddToFavorite,onRemoveFavorite,onRemoveItem} = React.useContext(AppContext);
+  const renderItems = () => {
+    return items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item, index) =>
+    <Card
+    key={index}
+    {...item}
+    onPlus={(item) => onAddToCart(item)}
+    onAddToFavorite={(item) => onAddToFavorite(item)}
+    onRemoveFavorite={onRemoveFavorite}
+    onRemoveItem={onRemoveItem}
+    />
+  )
+
+  };
     return(
         <div className="content p-40">
         <div className="d-flex justify-between align-center mb-40">
@@ -15,20 +35,7 @@ function Home({searchValue, setSearchValue, onChangeInput, items, onAddToCart, o
             <input onChange={onChangeInput} value={searchValue} type="text" placeholder="Поиск..."/>
           </div>
         </div> 
-          <div className="d-flex flex-wrap">
-          {
-            items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item, index) =>
-              <Card 
-              key={index}
-              {...item}
-              onPlus={(item) => onAddToCart(item)}
-              onAddToFavorite={(item) => onAddToFavorite(item)}
-              onRemoveFavorite={onRemoveFavorite}
-              onRemoveItem={onRemoveItem}
-              />
-            )
-          }
-          </div>
+          <div className="d-flex flex-wrap">{renderItems()}</div>
       </div>
     )
 }
