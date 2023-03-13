@@ -3,11 +3,12 @@ import React from "react";
 import AppContext from "../../context";
 import Info from "../Card/Info";
 import axios from "axios";
+import styles from './Basket.module.scss'
 
-function Basket(){
+function Basket({opened}){
   const [orderIsComplete, setOrderIsComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
-  const {itemsBasket, setCartOpened, totalPrice,setItemsBasket, onRemoveItem, loadOrders, setTotalPrice} = React.useContext(AppContext);
+  const {itemsBasket, setCartOpened, totalPrice,setItemsBasket, onRemoveItem, setTotalPrice} = React.useContext(AppContext);
 
   const onClickOrder = async () =>{
     try{
@@ -23,7 +24,6 @@ function Basket(){
       setOrderId(data.id);
       setOrderIsComplete(true);
       setItemsBasket([]);
-      loadOrders();
       setTotalPrice(0);
     }catch(error){ 
       alert("Не удалось создать заказ");
@@ -31,30 +31,27 @@ function Basket(){
   }
 
     return(
-        <div className="overlay">
-        <div className="drawer">
+        <div className={`${styles.overlay} ${opened ? styles.overlayVisible: ''}`}>
+        <div className={styles.drawer}>
                 <div className="d-flex justify-between">
                  <h2>Корзина</h2>
-                  <button onClick={() => setCartOpened(false)} className="btn removeBtn">
-                    <img  src="/img/cross.svg" alt="alt" />
-                  </button>
+                    <img  onClick={() => setCartOpened(false)} className={`btn ${styles.removeBtn}`} src="/img/cross.svg" alt="alt" />
                 </div>
-      {
+      { 
         itemsBasket.length > 0 ? 
         (
         <div>
-          <div className="items">
+          <div className={styles.items}>
         {itemsBasket.map((obj) => 
-            <div key={obj.id } className="drawer-card d-flex align-center">
-              <div style={{backgroundImage: `url(${obj.imgUrl})`}} className="cardItemImg"></div>
-              <div className="card-info">
+            <div key={obj.id } className={`${styles.drawer_card} d-flex align-center`}>
+              <div style={{backgroundImage: `url(${obj.imgUrl})`}} className={styles.cardItemImg}></div>
+              <div className={styles.card_info}>
               <h5>{obj.title}</h5>
               <span>{obj.price} руб.</span>
             </div>
-            <button className="btn removeBtn">
-              <img src="/img/cross.svg" alt="alt" onClick={() => onRemoveItem(obj.id)}/>
-            </button>
+              <img className={`btn ${styles.removeBtn}`} src="/img/cross.svg" alt="alt" onClick={() => onRemoveItem(obj.id)}/>
       </div>)}
+        </div>
             <ul className="CartTotalBlock mt-30">
             <li>
               <span>Итого:</span>
@@ -67,11 +64,10 @@ function Basket(){
               <b>{Math.round((totalPrice / 100) * 5)} руб.</b>
             </li>
           </ul>
-          <button className="btnBuy" onClick={() => onClickOrder()}>
+          <button className={`${styles.btnBuy}`} onClick={() => onClickOrder()}>
               Оформить заказ 
             <img src="/img/arrow.svg" alt="arrow" />
           </button> 
-    </div>
         </div>  
         )
         :
@@ -83,7 +79,7 @@ function Basket(){
         :
         "Добавьте хотя бы одну пару кросовок, чтобы сделать заказ"
       }
-        src={orderIsComplete ? "/img/complect-order.png"
+        imgUrl={orderIsComplete ? "/img/complect-order.png"
         :
         "/img/basket.png"
       }

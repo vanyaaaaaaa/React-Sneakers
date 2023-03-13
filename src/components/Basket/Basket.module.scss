@@ -1,0 +1,126 @@
+.overlay{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, ;
+}
+
+.overlayVisible{
+    visibility: visible;
+    opacity: 1;
+    .drawer{
+        transform: translateX(0);
+    }
+    html{
+        overflow: hidden;
+        position: sticky;
+    } 
+}
+
+.drawer{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 420px;
+    height: 100%;
+    right: 0;
+    background: #FFFFFF;
+    box-shadow: -10px 4px 24px rgba(0, 0, 0, 0.01);
+    padding: 30px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    position: fixed;
+    .items{
+        width: auto;
+        height: 415px;
+        flex: 1;
+        overflow: scroll;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }   
+    h2{
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+    }
+    .drawer_card{
+        padding: 20px;
+        border: 1px solid #F3F3F3;
+        border-radius: 20px;
+        margin-top: 25px;
+        overflow: hidden;
+        h5{
+            font-weight: 400;
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        p{
+            text-align: center;
+        }
+        span{
+            font-weight: 700;
+            font-size: 14px;
+        }
+        button{
+            border: none;
+        }
+        .card_info{
+            margin-left: 20px;
+        }
+        .removeBtn{
+            opacity: 0.5;
+            cursor: pointer;
+            transition: opacity 0.15s ease-in-out;
+            &:hover{
+                opacity: 1;
+            }
+        }
+        .cardItemImg{
+            width: 70px;
+            height: 70px;
+            background-size: contain;
+            background-position: 0 10px;
+            background-repeat: no-repeat;
+        }
+    }
+    .btnBuy{
+        justify-content: space-around;
+        position: relative;
+        transition: transform 0.2s ease-in-out;
+        padding: 20px 90px;
+        background-color: #9DD458;
+        color: #fff;
+        text-align: center;
+        border-radius: 18px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out;
+        &:hover{
+            img{
+                transform: translateX(5px);
+            }
+        } 
+        &:hover{
+            background: lighten(#9dd558, 5%);
+        }
+        &:active{
+            background: darken(#9dd558, 5%);
+        }
+        img {
+            position: absolute;
+            right: 55px;
+            top: 24px;
+            transition: transform 0.15s ease-in-out;
+        }
+    }
+}

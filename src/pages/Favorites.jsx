@@ -41,7 +41,7 @@ function Favorites(){
             <Info
               title={"Закладок нет :("}
               description={"Вы ничего не добавляли в закладки"}
-              src={"/img/smile2.png"}
+              imgUrl={"/img/smile2.png"}
               width={"70px"}
             />
           )

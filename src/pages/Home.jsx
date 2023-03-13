@@ -7,9 +7,9 @@ function Home({
   setSearchValue,
   onChangeInput
 }){
-  const {items, onAddToCart,onAddToFavorite,onRemoveFavorite,onRemoveItem} = React.useContext(AppContext);
+  const {items, isLoading,onAddToCart,onAddToFavorite,onRemoveFavorite,onRemoveItem} = React.useContext(AppContext);
   const renderItems = () => {
-    return items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item, index) =>
+    return ( isLoading ? [...Array(8)] : items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item, index) =>
     <Card
     key={index}
     {...item}
@@ -17,7 +17,7 @@ function Home({
     onAddToFavorite={(item) => onAddToFavorite(item)}
     onRemoveFavorite={onRemoveFavorite}
     onRemoveItem={onRemoveItem}
-    />
+    />)
   )
 
   };

@@ -3,7 +3,7 @@ import axios from "axios";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import Header from "./components/Header";
-import Basket from "./components/Basket/Basket";
+import Basket from "./components/Basket";
 import React from 'react';
 import Orders from "./pages/Orders";
 import AppContext from "./context";
@@ -16,32 +16,29 @@ function App() {
   const [itemsFavorite, setItemsFavorite] = React.useState([]);
   const [searchValue, setSearchValue] = React.useState('');
   const [cartOpened, setCartOpened] = React.useState(false);
-  const [orders, setOrders] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   async function fetchData(){
-    const itemsRes = await axios.get("http://localhost:3001/sneakers");
-    const itemsResBask = await axios.get("http://localhost:3001/basket");
-    const itemsResFav = await axios.get("http://localhost:3001/favorites");
-
-    setIsLoading(false);
-
-    setItems(itemsRes.data);
-    setItemsBasket(itemsResBask.data);
-    calcTotalPrice();
-    setItemsFavorite(itemsResFav.data);
-    loadOrders();
+    try{
+      const [itemsRes,itemsResBask, itemsResFav] = await Promise.all([
+        axios.get("http://localhost:3001/sneakers"),
+        axios.get("http://localhost:3001/basket"),
+        axios.get("http://localhost:3001/favorites")
+      ]);
+      setItems(itemsRes.data);
+      setItemsBasket(itemsResBask.data);
+      calcTotalPrice();
+      setItemsFavorite(itemsResFav.data);
+      setIsLoading(false);
+    }catch(error){
+      alert('Произошла ошибка при подгрузке данных');
+    }
   }
 
   React.useEffect(() => {
     fetchData();
   },
-    []); 
-
-  const loadOrders = async () => {
-    const itemsResOrders = await axios.get("http://localhost:3001/orders");
-    setOrders(itemsResOrders.data);
-  }
+    []);
 
   const onAddToCart = async (obj) =>{
     try{
@@ -57,6 +54,7 @@ function App() {
 
     }catch(error){
       alert('Не удалось добавить товар в корзину');
+      console.error(error);
     }
   }
 
@@ -67,6 +65,7 @@ function App() {
       calcTotalPrice();
     } catch(error){
       console.log('Не удалось удалить товар');
+      console.error(error);
     }
   } 
 
@@ -84,6 +83,7 @@ function App() {
       }
     } catch(error){
       alert('Произошла ошибка при добавлении в избранное');
+      console.error(error);
     }
   }
 
@@ -92,7 +92,8 @@ function App() {
       await axios.delete(`http://localhost:3001/favorites/${id}`);
       setItemsFavorite(prev => prev.filter(item => Number(item.id) !== Number(id)));
     } catch(error){
-      console.log('Не удалось удалить из избранного');
+      alert('Не удалось удалить из избранного');
+      console.error(error);
     }
   }
 
@@ -114,10 +115,13 @@ function App() {
   }
 
   return (  
-    <AppContext.Provider value={{isLoading, items, itemsBasket, itemsFavorite,cartOpened,totalPrice,orders,
-     isItemAdded, onAddToCart, onAddToFavorite, onRemoveFavorite, onRemoveItem, isItemFavorited, setCartOpened, setItemsBasket,onRemoveItem, loadOrders, setTotalPrice}}>
+    <AppContext.Provider value={{isLoading, items, itemsBasket, itemsFavorite,
+      cartOpened,totalPrice,isItemAdded, onAddToCart, onAddToFavorite, onRemoveFavorite, onRemoveItem, isItemFavorited,
+      setCartOpened, setItemsBasket,onRemoveItem, setTotalPrice}}>
       <div className="wrapper clear"> 
-      {cartOpened && <Basket/>}
+      <Basket 
+      opened={cartOpened}
+      />
       <Header/>
       <Routes>
         <Route
@@ -137,8 +141,7 @@ function App() {
         </Route>
         <Route
         path="/orders" element={
-          <Orders 
-          orders={orders}/>
+          <Orders />
         }
         >
         </Route>

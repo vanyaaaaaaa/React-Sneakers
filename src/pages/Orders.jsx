@@ -1,26 +1,59 @@
 import Card from "../components/Card";
 import React from "react";
 import {Link} from "react-router-dom";
-import AppContext from "../context";
+import axios from "axios";
 
 function Orders(){
-    const {orders} = React.useContext(AppContext);
-    orders.map(order => {
-        for (let i = 0; i < order.length; i++){
-            console.log(order[i]);
+    const [orders, setOrders] = React.useState([]);
+
+    const loadOrders = async () =>{
+        try{
+            const { data } = await axios.get("http://localhost:3001/orders");
+            setOrders(data);
+        }catch(error){
+            alert('Произошла ошибка при проверке заказов');
+            console.error(error);
         }
-    });
+    };
+
+    React.useEffect(() => {
+        loadOrders();
+    }, []);
+    
+    const delOrder = async (id) => {
+        try {
+            setOrders(prev => prev.filter(item => item.id !== id));
+            await axios.delete(`http://localhost:3001/orders/${id}`);
+        } catch(error){
+            alert('Произошла ошибка при удалении заказа');
+            console.error(error);
+        }
+    } 
 
     return(
-        <div>
+        <div className="content p-40">
         {
             orders.length > 0 ?
             (
-                <div>
-                    {
-                        
-                    }
-                </div>
+            <div>
+                <h1>Мои заказы</h1>
+                {orders.map((order) => {
+                return <>
+                   <h2>#{order.id}</h2>
+                   <p>Сумма: {order.amount} руб.</p>
+                   <div className="d-flex flex-wrap">
+                    {order.items.map(item =>
+                        <Card
+                            title={item.title}
+                            price={item.price}
+                            imgUrl={item.imgUrl}
+                        />
+                    )}
+                   </div>
+                   <button className="btnBuy" onClick={() => delOrder(order.id)}>Отказаться</button>
+                </>
+                })}
+            </div>
             )
             :
             (
